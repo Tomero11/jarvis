@@ -1,9 +1,25 @@
+from memory import save_event
 from ultralytics import YOLO
 import cv2
+import time
+from datetime import datetime
 
 model = YOLO("yolov8n.pt")
 
 camera = cv2.VideoCapture(0)
+
+last_person_time = 0
+last_cat_time = 0
+
+COOLDOWN = 10
+def save_picture(frame, object_type):
+    timestamp = datetime.now().strftime("%Y%m%d_%H%M%S")
+
+    filename = f"captures/{object_type}_{timestamp}.jpg"
+
+    cv2.imwrite(filename, frame)
+
+    print(f"Image saved: {filename}")
 
 while True:
     success, frame = camera.read()
@@ -12,6 +28,28 @@ while True:
         break
 
     results = model(frame)
+
+    for result in results:
+        for box in result.boxes:
+            class_id = int(box.cls[0])
+            class_name = model.names[class_id]
+            print(class_name)
+
+            if class_name == "person":
+                current_time = time.time()
+
+                if current_time - last_person_time > COOLDOWN:
+                    save_event("Person detected")
+                    save_picture(frame, "person")
+                    last_person_time = current_time
+
+            elif class_name == "cat":
+                current_time = time.time()
+
+                if current_time - last_cat_time > COOLDOWN:
+                    save_event("Cat detected")
+                    save_picture(frame, "cat")
+                    last_cat_time = current_time
 
     annotated_frame = results[0].plot()
 
