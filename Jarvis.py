@@ -19,6 +19,18 @@ def start_jarvis():
     print("Jarvis heard:", text)
 
     if text:
-        speak(f"You said {text}")
+
+        if "hello" in text.lower():
+             print("HELLO COMMAND DETECTED")
+             speak("Hello Tomer")
+
+        elif "who are you" in text.lower():
+            speak("I am Jarvis, your personal life assistant")
+
+        elif "how are you" in text.lower():
+            speak("I am doing great")
+
+        else:
+            speak("I don't understand yet")
 
 start_jarvis()
