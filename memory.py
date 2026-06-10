@@ -2,6 +2,7 @@ from datetime import datetime
 
 LOG_FILE = "events.log"
 
+
 def save_event(event):
     timestamp = datetime.now().strftime("%Y-%m-%d %H:%M:%S")
 
@@ -15,9 +16,11 @@ def show_memory():
     try:
         with open(LOG_FILE, "r") as file:
             print(file.read())
+
     except FileNotFoundError:
         print("No memories found.")
-  
+
+
 def last_memories(count=5):
     try:
         with open(LOG_FILE, "r") as file:
@@ -27,7 +30,9 @@ def last_memories(count=5):
             print(line.strip())
 
     except FileNotFoundError:
-        print("No memories found.")   
+        print("No memories found.")
+
+
 def find_memory(keyword):
     try:
         with open(LOG_FILE, "r") as file:
@@ -46,6 +51,7 @@ def find_memory(keyword):
     except FileNotFoundError:
         print("No memories found.")
 
+
 def last_memory_of(keyword):
     try:
         with open(LOG_FILE, "r") as file:
@@ -58,9 +64,20 @@ def last_memory_of(keyword):
                 matches.append(line.strip())
 
         if matches:
-            print(matches[-1])
+            return matches[-1]
         else:
-            print(f"No memories found for: {keyword}")
+            return f"No memories found for: {keyword}"
 
     except FileNotFoundError:
-        print("No memories found.")
+        return "No memories found."
+
+
+def get_last_memories(count=5):
+    try:
+        with open(LOG_FILE, "r") as file:
+            lines = file.readlines()
+
+        return "\n".join(line.strip() for line in lines[-count:])
+
+    except FileNotFoundError:
+        return "No memories found."
