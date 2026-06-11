@@ -123,3 +123,23 @@ def what_i_said_today():
 
     except FileNotFoundError:
         return []        
+
+def last_user_message():
+
+    try:
+        with open(LOG_FILE, "r") as file:
+            lines = file.readlines()
+
+        user_lines = []
+
+        for line in lines:
+            if "Tomer said:" in line:
+                user_lines.append(line.strip())
+
+        if len(user_lines) >= 2:
+            return user_lines[-2]
+
+        return "No previous messages found."
+
+    except FileNotFoundError:
+        return "No memories found."

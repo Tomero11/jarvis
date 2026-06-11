@@ -8,7 +8,7 @@ from memory import (
     what_i_said_today
     )
 from listening import listen
-
+from memory import last_user_message
 
 def start_jarvis():
     print("Jarvis starting...")
@@ -30,11 +30,16 @@ def start_jarvis():
 
         save_event(f"Tomer said: {text}")
 
-        if "goodbye" in text.lower():
-            speak("Goodbye Tomer")
-            break
+        if "goodbye" in text.lower() \
+            or "גוד ביי" in text \
+            or "להתראות" in text:
 
-        elif "hello" in text.lower():
+              speak("Goodbye Tomer")
+              break
+
+        elif "hello" in text.lower() \
+            or "שלום" in text:
+
             print("HELLO COMMAND DETECTED")
             speak("Hello Tomer")
         
@@ -49,8 +54,19 @@ def start_jarvis():
           else:
               speak("I do not remember anything from today")    
 
-        elif "who are you" in text.lower():
+        elif "who are you" in text.lower() \
+            or "מי אתה" in text:
+
             speak("I am Jarvis, your personal life assistant")
+
+        elif "what was the last thing i said" in text.lower() \
+              or "מה הדבר האחרון שאמרתי" in text:
+
+              last_message = last_user_message()
+
+              print(last_message)
+
+              speak("I found your last message")    
 
         elif "search memory for" in text.lower():
 
@@ -72,8 +88,17 @@ def start_jarvis():
 
         elif "how are you" in text.lower():
             speak("I am doing great")
+        elif "what was the last thing i said" in text.lower() \
+            or "מה הדבר האחרון שאמרתי" in text:
+
+            last_message = last_user_message()
+
+            print(last_message)
+
+            speak("I found your last message")      
 
         else:
             speak("I don't understand yet")
+  
 
 start_jarvis()

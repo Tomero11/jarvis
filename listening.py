@@ -26,7 +26,7 @@ def listen():
         audio = recognizer.record(source)
 
     try:
-        text = recognizer.recognize_google(audio)
+        text = recognizer.recognize_google(audio, language="he-IL")
 
         print("You said:", text)
 
