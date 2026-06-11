@@ -64,3 +64,46 @@ def last_memory_of(keyword):
 
     except FileNotFoundError:
         print("No memories found.")
+
+def last_memory_of(keyword):
+    try:
+        with open(LOG_FILE, "r") as file:
+            lines = file.readlines()
+
+        matches = []
+
+        for line in lines:
+            if keyword.lower() in line.lower():
+                matches.append(line.strip())
+
+        if matches:
+            return matches[-1]
+        else:
+            return f"No memories found for: {keyword}"
+
+    except FileNotFoundError:
+        return "No memories found."
+def get_last_memories(count=5):
+    try:
+        with open(LOG_FILE, "r") as file:
+            lines = file.readlines()
+
+        return "\n".join(line.strip() for line in lines[-count:])
+
+    except FileNotFoundError:
+        return "No memories found."
+def search_memory(keyword):
+    try:
+        with open(LOG_FILE, "r") as file:
+            lines = file.readlines()
+
+        matches = []
+
+        for line in lines:
+            if keyword.lower() in line.lower():
+                matches.append(line.strip())
+
+        return matches
+
+    except FileNotFoundError:
+        return []        
