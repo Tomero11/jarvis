@@ -5,7 +5,7 @@ import speech_recognition as sr
 def listen():
 
     fs = 44100
-    sd.default.device = (11, 1)
+    sd.default.device = (1, 10)
 
     print("Listening...")
 
