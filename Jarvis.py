@@ -18,17 +18,22 @@ def start_jarvis():
     print("Memory module loaded")
     print("Vision module ready")
 
-    
-    text = listen()
-    
-    print("Jarvis heard:", text)
-   
-    if text:
-     save_event(f"Tomer said: {text}")
+    while True:
 
-    if text:
+        text = listen()
 
-        if "hello" in text.lower():
+        print("Jarvis heard:", text)
+
+        if not text:
+            continue
+
+        save_event(f"Tomer said: {text}")
+
+        if "goodbye" in text.lower():
+            speak("Goodbye Tomer")
+            break
+
+        elif "hello" in text.lower():
             print("HELLO COMMAND DETECTED")
             speak("Hello Tomer")
 
@@ -58,6 +63,5 @@ def start_jarvis():
 
         else:
             speak("I don't understand yet")
-
 
 start_jarvis()
