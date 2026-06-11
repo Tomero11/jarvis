@@ -9,6 +9,7 @@ from memory import (
     )
 from listening import listen
 from memory import last_user_message
+from ai import ask_ai
 
 def start_jarvis():
     print("Jarvis starting...")
@@ -20,7 +21,7 @@ def start_jarvis():
     print("Vision module ready")
 
     while True:
-
+        
         text = listen()
 
         print("Jarvis heard:", text)
@@ -28,7 +29,7 @@ def start_jarvis():
         if not text:
             continue
 
-        save_event(f"Tomer said: {text}")
+        #save_event(f"Tomer said: {text}")
 
         if "goodbye" in text.lower() \
             or "גוד ביי" in text \
@@ -98,7 +99,14 @@ def start_jarvis():
             speak("I found your last message")      
 
         else:
-            speak("I don't understand yet")
+
+            reply = ask_ai(text)
+
+            print("AI:", reply)
+
+            print("AI:", reply)
+
+# speak(reply)
   
 
 start_jarvis()
