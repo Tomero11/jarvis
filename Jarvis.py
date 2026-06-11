@@ -2,14 +2,20 @@ from voice import speak
 from memory import (
     last_memories,
     get_last_memories,
+
     last_memory_of,
     search_memory,
     save_event,
     what_i_said_today
     )
+
+last_memory_of
+
+
 from listening import listen
 from memory import last_user_message
 from ai import ask_ai
+
 
 def start_jarvis():
     print("Jarvis starting...")
@@ -23,6 +29,7 @@ def start_jarvis():
     while True:
         
         text = listen()
+
 
         print("Jarvis heard:", text)
 
@@ -58,7 +65,22 @@ def start_jarvis():
         elif "who are you" in text.lower() \
             or "מי אתה" in text:
 
+         while True:
+
+          text = listen()
+
+        print("Jarvis heard:", text)
+
+        if not text:
+            continue
+
+        if "hello" in text.lower():
+            print("HELLO COMMAND DETECTED")
+            speak("Hello Tomer")
+
+
             speak("I am Jarvis, your personal life assistant")
+
 
         elif "what was the last thing i said" in text.lower() \
               or "מה הדבר האחרון שאמרתי" in text:
@@ -87,6 +109,21 @@ def start_jarvis():
                     f"I found no memories about {keyword}"
                 )
 
+        elif "what did you see today" in text.lower():
+            memories = get_last_memories()
+
+            print(memories)
+
+            speak("Here are my latest memories")
+
+        elif "when did you last see a cat" in text.lower():
+            memory = last_memory_of("cat")
+
+            print(memory)
+
+            speak(memory)
+
+
         elif "how are you" in text.lower():
             speak("I am doing great")
         elif "what was the last thing i said" in text.lower() \
@@ -98,6 +135,10 @@ def start_jarvis():
 
             speak("I found your last message")      
 
+        elif "goodbye" in text.lower() or "bye" in text.lower():
+            speak("Goodbye Tomer")
+            break
+
         else:
 
             reply = ask_ai(text)
@@ -108,5 +149,6 @@ def start_jarvis():
 
 # speak(reply)
   
+
 
 start_jarvis()
