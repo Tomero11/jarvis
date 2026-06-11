@@ -107,3 +107,19 @@ def search_memory(keyword):
 
     except FileNotFoundError:
         return []        
+def what_i_said_today():
+
+    try:
+        with open(LOG_FILE, "r") as file:
+            lines = file.readlines()
+
+        results = []
+
+        for line in lines:
+            if "Tomer said:" in line:
+                results.append(line.strip())
+
+        return results
+
+    except FileNotFoundError:
+        return []        

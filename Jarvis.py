@@ -4,7 +4,8 @@ from memory import (
     get_last_memories,
     last_memory_of,
     search_memory,
-    save_event
+    save_event,
+    what_i_said_today
     )
 from listening import listen
 
@@ -36,6 +37,17 @@ def start_jarvis():
         elif "hello" in text.lower():
             print("HELLO COMMAND DETECTED")
             speak("Hello Tomer")
+        
+        elif "what did i say today" in text.lower():
+
+          results = what_i_said_today()
+
+          if results:
+            print("\n".join(results[-10:]))
+            speak(f"You said {len(results)} things today")
+
+          else:
+              speak("I do not remember anything from today")    
 
         elif "who are you" in text.lower():
             speak("I am Jarvis, your personal life assistant")
