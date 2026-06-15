@@ -117,3 +117,21 @@ def last_user_message():
     except FileNotFoundError:
 
         return "No memories found."
+def last_memory_of(keyword):
+    try:
+        with open(LOG_FILE, "r") as file:
+            lines = file.readlines()
+
+        matches = []
+
+        for line in lines:
+            if keyword.lower() in line.lower():
+                matches.append(line.strip())
+
+        if matches:
+            return matches[-1]
+
+        return f"No memories found for: {keyword}"
+
+    except FileNotFoundError:
+        return "No memories found."
