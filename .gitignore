@@ -2,3 +2,7 @@ __pycache__/
 *.pyc
 temp.wav
 captures/
+jarvis_voice.mp3
+voice_old.py
+temp.wav
+__pycache__/
