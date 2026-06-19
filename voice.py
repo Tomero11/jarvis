@@ -1,7 +1,17 @@
-import pyttsx3
+import asyncio
+import edge_tts
+from playsound3 import playsound
 
-engine = pyttsx3.init()
+VOICE = "he-IL-HilaNeural"
 
 def speak(text):
-    engine.say(text)
-    engine.runAndWait()
+
+    async def _speak():
+        await edge_tts.Communicate(
+            text,
+            VOICE
+        ).save("jarvis_voice.mp3")
+
+    asyncio.run(_speak())
+
+    playsound("jarvis_voice.mp3")

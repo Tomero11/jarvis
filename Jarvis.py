@@ -30,9 +30,6 @@ def start_jarvis():
         
         text = listen()
 
-
-        print("Jarvis heard:", text)
-
         if not text:
             continue
 
@@ -145,9 +142,8 @@ def start_jarvis():
 
             print("AI:", reply)
 
-            print("AI:", reply)
 
-# speak(reply)
+            speak(reply)
   
 
 

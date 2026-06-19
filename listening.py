@@ -10,7 +10,7 @@ def listen():
     print("Listening...")
 
     recording = sd.rec(
-        int(5 * fs),
+        int(3 * fs),
         samplerate=fs,
         channels=1,
         dtype="int16"
