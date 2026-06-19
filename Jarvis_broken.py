@@ -90,18 +90,18 @@ def start_jarvis():
 
         elif "search memory for" in text.lower():
 
-         keyword = text.lower().replace(
+            keyword = text.lower().replace(
                 "search memory for", ""
             ).strip()
 
-         results = search_memory(keyword)
+            results = search_memory(keyword)
 
-         if results:
+            if results:
                 print("\n".join(results[-5:]))
                 speak(
                     f"I found {len(results)} memories about {keyword}"
                 )
-         else:
+            else:
                 speak(
                     f"I found no memories about {keyword}"
                 )
@@ -135,37 +135,29 @@ def start_jarvis():
         elif "goodbye" in text.lower() or "bye" in text.lower():
             speak("Goodbye Tomer")
             break
-        elif "איך קוראים לי" in text:
+elif "קוראים לי" in text:
 
-         name = get_name()
+    name = text.replace("קוראים לי", "").strip()
 
-         if name:
-          speak(f"קוראים לך {name}")
-         else:
-          speak("אני עדיין לא יודע איך קוראים לך")
+    save_event(f"NAME:{name}")
 
-         continue
+    speak(f"נעים להכיר {name}")
 
+elif "איך קוראים לי" in text:
 
-        elif "קוראים לי" in text:
+    name = get_name()
 
-         name = text.replace("קוראים לי", "").strip()
+    if name:
+        speak(f"קוראים לך {name}")
 
-         save_event(f"NAME:{name}")
+    else:
+        speak("אני עדיין לא יודע איך קוראים לך")
 
-         speak(f"נעים להכיר {name}")
+else:
 
-         continue
+    reply = ask_ai(text)
 
- 
-        else:
+    print("AI:", reply)
 
-         reply = ask_ai(text)
-
-         print("AI:", reply)
-
-         speak(reply)
-  
-
-
+    speak(reply)
 start_jarvis()

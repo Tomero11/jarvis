@@ -6,7 +6,7 @@ LOG_FILE = "events.log"
 def save_event(event):
     timestamp = datetime.now().strftime("%Y-%m-%d %H:%M:%S")
 
-    with open(LOG_FILE, "a") as file:
+    with open(LOG_FILE, "a", encoding="utf-8") as file:
         file.write(f"{timestamp} - {event}\n")
 
     print(f"Saved: {event}")
@@ -14,7 +14,7 @@ def save_event(event):
 
 def show_memory():
     try:
-        with open(LOG_FILE, "r") as file:
+        with open(LOG_FILE, "r", encoding="utf-8") as file:
             print(file.read())
 
     except FileNotFoundError:
@@ -23,7 +23,7 @@ def show_memory():
 
 def last_memories(count=5):
     try:
-        with open(LOG_FILE, "r") as file:
+        with open(LOG_FILE, "r", encoding="utf-8") as file:
             lines = file.readlines()
 
         for line in lines[-count:]:
@@ -35,7 +35,7 @@ def last_memories(count=5):
 
 def find_memory(keyword):
     try:
-        with open(LOG_FILE, "r") as file:
+        with open(LOG_FILE, "r", encoding="utf-8") as file:
             lines = file.readlines()
 
         found = False
@@ -57,7 +57,7 @@ def find_memory(keyword):
 
 def get_last_memories(count=5):
     try:
-        with open(LOG_FILE, "r") as file:
+        with open(LOG_FILE, "r", encoding="utf-8") as file:
             lines = file.readlines()
 
         return "\n".join(line.strip() for line in lines[-count:])
@@ -67,7 +67,7 @@ def get_last_memories(count=5):
         return "No memories found."
 def search_memory(keyword):
     try:
-        with open(LOG_FILE, "r") as file:
+        with open(LOG_FILE, "r", encoding="utf-8") as file:
             lines = file.readlines()
 
         matches = []
@@ -83,7 +83,7 @@ def search_memory(keyword):
 def what_i_said_today():
 
     try:
-        with open(LOG_FILE, "r") as file:
+        with open(LOG_FILE, "r", encoding="utf-8") as file:
             lines = file.readlines()
 
         results = []
@@ -100,7 +100,7 @@ def what_i_said_today():
 def last_user_message():
 
     try:
-        with open(LOG_FILE, "r") as file:
+        with open(LOG_FILE, "r", encoding="utf-8") as file:
             lines = file.readlines()
 
         user_lines = []
@@ -119,7 +119,7 @@ def last_user_message():
         return "No memories found."
 def last_memory_of(keyword):
     try:
-        with open(LOG_FILE, "r") as file:
+        with open(LOG_FILE, "r", encoding="utf-8") as file:
             lines = file.readlines()
 
         matches = []
@@ -135,3 +135,11 @@ def last_memory_of(keyword):
 
     except FileNotFoundError:
         return "No memories found."
+def get_name():
+
+    result = last_memory_of("NAME:")
+
+    if "No memories found" in result:
+        return None
+
+    return result.split("NAME:")[-1].strip()
