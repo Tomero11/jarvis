@@ -31,7 +31,7 @@ Jarvis should eventually:
 
 ## Current Sprint
 
-### V0.2 Memory
+### V0.2 Memory   done 
 
 Goal:
 
