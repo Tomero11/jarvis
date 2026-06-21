@@ -143,3 +143,20 @@ def get_name():
         return None
 
     return result.split("NAME:")[-1].strip()
+
+def get_city():
+
+    result = last_memory_of("CITY:")
+
+    if "No memories found" in result:
+        return None
+
+    return result.split("CITY:")[-1].strip()
+def get_cats():
+
+    result = last_memory_of("CATS:")
+
+    if "No memories found" in result:
+        return None
+
+    return result.split("CATS:")[-1].strip()

@@ -47,3 +47,8 @@ Later:
 Jarvis answers:
 
 "קוראים לך תומר"
+
+
+
+V0.3 Fact Memory
+V0.4 Vision Integration

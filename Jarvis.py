@@ -6,7 +6,10 @@ from memory import (
     search_memory,
     save_event,
     what_i_said_today,
-    get_name
+    get_name,
+    get_city,
+    get_cats
+    
 )
 
 last_memory_of
@@ -16,6 +19,9 @@ from listening import listen
 from memory import last_user_message
 from ai import ask_ai
 
+def say(text):
+    print(f"Jarvis: {text}")
+    speak(text)
 
 def start_jarvis():
     print("Jarvis starting...")
@@ -35,19 +41,23 @@ def start_jarvis():
 
         #save_event(f"Tomer said: {text}")
 
-        if "goodbye" in text.lower() \
-            or "גוד ביי" in text \
+        elif "goodbye" in text.lower() \
+            or "bye" in text.lower() \
+            or "ביי" in text \
             or "להתראות" in text:
 
-              speak("Goodbye Tomer")
+              say("Goodbye")
               break
 
         elif "hello" in text.lower() \
             or "שלום" in text:
 
             print("HELLO COMMAND DETECTED")
-            speak("Hello Tomer")
-        
+            say("Hello")
+             
+            continue
+
+
         elif "what did i say today" in text.lower():
 
           results = what_i_said_today()
@@ -140,6 +150,7 @@ def start_jarvis():
          name = get_name()
 
          if name:
+          print(f"Jarvis: קוראים לך {name}")
           speak(f"קוראים לך {name}")
          else:
           speak("אני עדיין לא יודע איך קוראים לך")
@@ -147,25 +158,116 @@ def start_jarvis():
          continue
 
 
+        elif "איך קוראים לי" in text:
+
+            name = get_name()
+
+            if name:
+                say(f"קוראים לך {name}")
+            else:
+                say("אני עדיין לא יודע איך קוראים לך")
+
+            continue
+
+
         elif "קוראים לי" in text:
 
-         name = text.replace("קוראים לי", "").strip()
+            name = text.replace("קוראים לי", "").strip()
 
-         save_event(f"NAME:{name}")
+            save_event(f"NAME:{name}")
 
-         speak(f"נעים להכיר {name}")
+            say(f"נעים להכיר {name}")
+
+            continue
+
+
+        elif text.startswith("אני גר ב"):
+
+            city = text.replace("אני גר ב", "").strip()
+
+            save_event(f"CITY:{city}")
+
+            say(f"אוקיי, אז אתה גר ב{city}")
+
+            continue
+
+
+        elif "איפה אני גר" in text:
+
+            city = get_city()
+
+            if city:
+                say(f"אתה גר ב{city}")
+            else:
+                say("אני עדיין לא יודע איפה אתה גר")
+
+            continue
+          
+        elif text.startswith("יש לי"):
+
+         cats = text.replace("יש לי", "").strip()
+
+         save_event(f"CATS:{cats}")
+
+         say(f"אוקיי, רשמתי שיש לך {cats}")
 
          continue
 
- 
+        elif "כמה חתולים יש לי" in text:
+
+         cats = get_cats()
+
+         if cats:
+          say(f"יש לך {cats}")
+         else:
+          say("אני עדיין לא יודע כמה חתולים יש לך")
+
+         continue
+
+        elif "מה אתה יודע עליי" in text:
+
+         name = get_name()
+         city = get_city()
+         cats = get_cats()
+
+         info = []
+
+         if name:
+          info.append(f"קוראים לך {name}")
+
+         if city:
+          info.append(f"אתה גר ב{city}")
+
+         if cats:
+          info.append(f"יש לך {cats}")
+
+         if info:
+
+          summary = ". ".join(info)
+
+          say(summary)
+
+         else:
+
+          say("אני עדיין לא יודע עליך הרבה")
+
+          continue
+
         else:
 
-         reply = ask_ai(text)
+            try:
 
-         print("AI:", reply)
+                reply = ask_ai(text)
 
-         speak(reply)
-  
+                print("AI:", reply)
+
+                say(reply)
+
+            except Exception as e:
+
+                print("AI Error:", e)
+
+                say("AI is offline")
 
 
 start_jarvis()
