@@ -18,6 +18,8 @@ last_memory_of
 from listening import listen
 from memory import last_user_message
 from ai import ask_ai
+from people_detection import start_vision
+import threading
 
 def say(text):
     print(f"Jarvis: {text}")
@@ -31,6 +33,13 @@ def start_jarvis():
     print("Voice module loaded")
     print("Memory module loaded")
     print("Vision module ready")
+
+    threading.Thread(
+    target=start_vision,
+    daemon=True
+).start()
+
+    print("Vision started")
 
     while True:
         

@@ -22,44 +22,52 @@ def save_picture(frame, object_type):
 
     print(f"Image saved: {filename}")
 
-while True:
-    success, frame = camera.read()
+def start_vision(): 
+     global last_person_time
+     global last_cat_time
+   
+     while True:
+        success, frame = camera.read()
 
-    if not success:
-        break
+        if not success:
+            break
 
-    results = model(frame)
+        results = model(frame, verbose=False)
 
-    for result in results:
-        for box in result.boxes:
-            class_id = int(box.cls[0])
-            class_name = model.names[class_id]
-            print(class_name)
+        for result in results:
+            for box in result.boxes:
+                class_id = int(box.cls[0])
+                class_name = model.names[class_id]
+                #print(class_name)
 
-            if class_name == "person":
-                current_time = time.time()
+                if class_name == "person":
+                    current_time = time.time()
 
-                if current_time - last_person_time > COOLDOWN:
-                    save_event("Person detected")
-                    save_picture(frame, "person")
-                    speak("Person detected")
-                    last_person_time = current_time
+                    if current_time - last_person_time > COOLDOWN:
+                        save_event("Person detected")
+                        save_picture(frame, "person")
+                        print("Person detected")
+                        last_person_time = current_time
 
-            elif class_name == "cat":
-                current_time = time.time()
+                elif class_name == "cat":
+                    current_time = time.time()
 
-                if current_time - last_cat_time > COOLDOWN:
-                    save_event("Cat detected")
-                    save_picture(frame, "cat")
-                    speak("Cat detected")
-                    last_cat_time = current_time
+                    if current_time - last_cat_time > COOLDOWN:
+                        save_event("Cat detected")
+                        save_picture(frame, "cat")
+                        print("Cat detected")
+                        last_cat_time = current_time
 
-    annotated_frame = results[0].plot()
+        annotated_frame = results[0].plot()
 
-    cv2.imshow("Jarvis Person Detection", annotated_frame)
+        cv2.imshow("Jarvis Person Detection", annotated_frame)
 
-    if cv2.waitKey(1) & 0xFF == ord('q'):
-        break
+        if cv2.waitKey(1) & 0xFF == ord('q'):
+            break
 
-camera.release()
-cv2.destroyAllWindows()
+     camera.release()
+     cv2.destroyAllWindows()
+     
+     
+if __name__ == "__main__":
+   start_vision()
