@@ -237,9 +237,9 @@ def start_jarvis():
 
         elif "מה אתה יודע עליי" in text:
 
-         name = get_name()
-         city = get_city()
-         cats = get_cats()
+         name = get_profile_value("name")
+         city = get_profile_value("city")
+         cats = get_profile_value("cats")
 
          info = []
 

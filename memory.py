@@ -164,11 +164,14 @@ import json
 
 PROFILE_FILE = "profile.json"
 
-
 def load_profile():
     try:
         with open(PROFILE_FILE, "r", encoding="utf-8") as file:
             return json.load(file)
+
+    except FileNotFoundError:
+        save_profile({})
+        return {}
 
     except:
         return {}
