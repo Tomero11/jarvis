@@ -160,3 +160,37 @@ def get_cats():
         return None
 
     return result.split("CATS:")[-1].strip()
+import json
+
+PROFILE_FILE = "profile.json"
+
+
+def load_profile():
+    try:
+        with open(PROFILE_FILE, "r", encoding="utf-8") as file:
+            return json.load(file)
+
+    except:
+        return {}
+
+
+def save_profile(profile):
+    with open(PROFILE_FILE, "w", encoding="utf-8") as file:
+        json.dump(
+            profile,
+            file,
+            ensure_ascii=False,
+            indent=4
+        )
+
+
+def update_profile(key, value):
+    profile = load_profile()
+
+    profile[key] = value
+
+    save_profile(profile)
+
+def get_profile_value(key):
+    profile = load_profile()
+    return profile.get(key)

@@ -8,7 +8,8 @@ from memory import (
     what_i_said_today,
     get_name,
     get_city,
-    get_cats
+    get_cats,
+    get_profile_value
     
 )
 
@@ -20,6 +21,7 @@ from memory import last_user_message
 from ai import ask_ai
 from people_detection import start_vision
 import threading
+from memory import update_profile, load_profile
 
 def say(text):
     print(f"Jarvis: {text}")
@@ -156,7 +158,7 @@ def start_jarvis():
             break
         elif "איך קוראים לי" in text:
 
-         name = get_name()
+         name = get_profile_value("name")
 
          if name:
           print(f"Jarvis: קוראים לך {name}")
@@ -183,7 +185,7 @@ def start_jarvis():
 
             name = text.replace("קוראים לי", "").strip()
 
-            save_event(f"NAME:{name}")
+            update_profile("name", name)
 
             say(f"נעים להכיר {name}")
 
@@ -194,7 +196,7 @@ def start_jarvis():
 
             city = text.replace("אני גר ב", "").strip()
 
-            save_event(f"CITY:{city}")
+            update_profile("city", city)
 
             say(f"אוקיי, אז אתה גר ב{city}")
 
@@ -203,7 +205,7 @@ def start_jarvis():
 
         elif "איפה אני גר" in text:
 
-            city = get_city()
+            city = get_profile_value("city")
 
             if city:
                 say(f"אתה גר ב{city}")
@@ -216,7 +218,7 @@ def start_jarvis():
 
          cats = text.replace("יש לי", "").strip()
 
-         save_event(f"CATS:{cats}")
+         update_profile("cats", "שני חתולים")
 
          say(f"אוקיי, רשמתי שיש לך {cats}")
 
@@ -224,7 +226,7 @@ def start_jarvis():
 
         elif "כמה חתולים יש לי" in text:
 
-         cats = get_cats()
+         cats = get_profile_value("cats")
 
          if cats:
           say(f"יש לך {cats}")
