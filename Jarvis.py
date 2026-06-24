@@ -52,19 +52,27 @@ def start_jarvis():
 
         #save_event(f"Tomer said: {text}")
 
-        elif "goodbye" in text.lower() \
-            or "bye" in text.lower() \
-            or "ביי" in text \
-            or "להתראות" in text:
+        elif "להתראות" in text or "ביי" in text:
 
-              say("Goodbye")
-              break
+         name = get_profile_value("name")
+
+         if name:
+          say(f"להתראות {name}")
+         else:
+          say("להתראות")
+
+         break
 
         elif "hello" in text.lower() \
             or "שלום" in text:
 
             print("HELLO COMMAND DETECTED")
-            say("Hello")
+            name = get_profile_value("name")
+
+            if name:
+             say(f"שלום {name}, מה שלומך?")
+            else:
+             say("שלום")
              
             continue
 
