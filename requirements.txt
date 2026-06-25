@@ -1,0 +1,7 @@
+ultralytics
+opencv-python
+edge-tts
+SpeechRecognition
+pygame
+requests
+playsound3
