@@ -1,7 +1,12 @@
+openai
 ultralytics
+torch
 opencv-python
-edge-tts
+numpy
+scipy
 SpeechRecognition
+sounddevice
+edge-tts
+playsound3
 pygame
 requests
-playsound3
