@@ -22,10 +22,13 @@ from ai import ask_ai
 from people_detection import start_vision
 import threading
 from memory import update_profile, load_profile
+import re
 
 def say(text):
     print(f"Jarvis: {text}")
     speak(text)
+def clean_for_speech(text):
+ return re.sub(r'[^\w\s.,!?א-ת]', '', text)
 
 def start_jarvis():
     print("Jarvis starting...")
@@ -88,127 +91,37 @@ def start_jarvis():
           else:
               speak("I do not remember anything from today")    
 
-        elif "who are you" in text.lower() \
-            or "מי אתה" in text:
+        elif text.startswith("קוראים לי"):
 
-         while True:
+         name = text.replace("קוראים לי", "").strip()
 
-          text = listen()
+         update_profile("name", name)
 
-        print("Jarvis heard:", text)
+         say(f"נעים להכיר {name}")
 
-        if not text:
-            continue
-
-        if "hello" in text.lower():
-            print("HELLO COMMAND DETECTED")
-            speak("Hello Tomer")
-
-
-            speak("I am Jarvis, your personal life assistant")
-
-
-        elif "what was the last thing i said" in text.lower() \
-              or "מה הדבר האחרון שאמרתי" in text:
-
-              last_message = last_user_message()
-
-              print(last_message)
-
-              speak("I found your last message")    
-
-        elif "search memory for" in text.lower():
-
-         keyword = text.lower().replace(
-                "search memory for", ""
-            ).strip()
-
-         results = search_memory(keyword)
-
-         if results:
-                print("\n".join(results[-5:]))
-                speak(
-                    f"I found {len(results)} memories about {keyword}"
-                )
-         else:
-                speak(
-                    f"I found no memories about {keyword}"
-                )
-
-        elif "what did you see today" in text.lower():
-            memories = get_last_memories()
-
-            print(memories)
-
-            speak("Here are my latest memories")
-
-        elif "when did you last see a cat" in text.lower():
-            memory = last_memory_of("cat")
-
-            print(memory)
-
-            speak(memory)
-
-
-        elif "how are you" in text.lower():
-            speak("I am doing great")
-        elif "what was the last thing i said" in text.lower() \
-            or "מה הדבר האחרון שאמרתי" in text:
-
-            last_message = last_user_message()
-
-            print(last_message)
-
-            speak("I found your last message")      
-
-        elif "goodbye" in text.lower() or "bye" in text.lower():
-            speak("Goodbye Tomer")
-            break
+         continue
+        
         elif "איך קוראים לי" in text:
 
          name = get_profile_value("name")
 
          if name:
-          print(f"Jarvis: קוראים לך {name}")
-          speak(f"קוראים לך {name}")
+          say(f"קוראים לך {name}")
          else:
-          speak("אני עדיין לא יודע איך קוראים לך")
+          say("אני עדיין לא יודע איך קוראים לך")
 
          continue
 
 
-        elif "איך קוראים לי" in text:
-
-            name = get_name()
-
-            if name:
-                say(f"קוראים לך {name}")
-            else:
-                say("אני עדיין לא יודע איך קוראים לך")
-
-            continue
-
-
-        elif "קוראים לי" in text:
-
-            name = text.replace("קוראים לי", "").strip()
-
-            update_profile("name", name)
-
-            say(f"נעים להכיר {name}")
-
-            continue
-
-
         elif text.startswith("אני גר ב"):
 
-            city = text.replace("אני גר ב", "").strip()
+         city = text.replace("אני גר ב", "").strip()
 
-            update_profile("city", city)
+         update_profile("city", city)
 
-            say(f"אוקיי, אז אתה גר ב{city}")
+         say(f"אוקיי, אז אתה גר ב{city}")
 
-            continue
+         continue
 
 
         elif "איפה אני גר" in text:
@@ -276,11 +189,14 @@ def start_jarvis():
 
             try:
 
-                reply = ask_ai(text)
+                profile = load_profile()
+                memories = get_last_memories()
+
+                reply = ask_ai(text, profile, memories)
 
                 print("AI:", reply)
 
-                say(reply)
+                say(clean_for_speech(reply))
 
             except Exception as e:
 

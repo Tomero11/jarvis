@@ -32,6 +32,9 @@ def listen():
 
         return text
 
+    except sr.UnknownValueError:
+        return None
+
     except Exception as e:
-        print("Error:", e)
+        print(f"Listening Error: {type(e).__name__}: {e}")
         return None
