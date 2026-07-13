@@ -1,8 +1,7 @@
 from ollama import chat
 
-def ask_ai(question, profile=None, memories=None):
 
-    system_prompt = """
+SYSTEM_PROMPT = """
 אתה ג'רוויס, עוזר אישי.
 
 ענה בעברית בלבד.
@@ -16,22 +15,23 @@ def ask_ai(question, profile=None, memories=None):
 
 זיכרונות אחרונים:
 ...
-
 """
 
+
+def ask_ai(question, profile=None, memories=None):
     try:
         response = chat(
             model="gemma3:4b",
             messages=[
                 {
                     "role": "system",
-                    "content": system_prompt
+                    "content": SYSTEM_PROMPT,
                 },
                 {
                     "role": "user",
-                    "content": question
-                }
-            ]
+                    "content": question,
+                },
+            ],
         )
 
         return response["message"]["content"]
