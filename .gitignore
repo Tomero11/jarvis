@@ -6,3 +6,10 @@ jarvis_voice.mp3
 voice_old.py
 temp.wav
 __pycache__/
+build/
+dist/
+*.spec
+jarvis_voice.mp3
+temp.wav
+captures/
+events.log
