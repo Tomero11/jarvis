@@ -2,31 +2,39 @@ import sounddevice as sd
 from scipy.io.wavfile import write
 import speech_recognition as sr
 
+
 def listen():
 
     fs = 44100
-    sd.default.device = (1, 10)
 
     print("Listening...")
 
-    recording = sd.rec(
-        int(3 * fs),
-        samplerate=fs,
-        channels=1,
-        dtype="int16"
-    )
+    try:
+        recording = sd.rec(
+            int(3 * fs),
+            samplerate=fs,
+            channels=1,
+            dtype="int16"
+        )
 
-    sd.wait()
+        sd.wait()
 
-    write("temp.wav", fs, recording)
+        write("temp.wav", fs, recording)
+
+    except Exception as e:
+        print(f"Microphone Error: {type(e).__name__}: {e}")
+        return None
 
     recognizer = sr.Recognizer()
 
-    with sr.AudioFile("temp.wav") as source:
-        audio = recognizer.record(source)
-
     try:
-        text = recognizer.recognize_google(audio, language="he-IL")
+        with sr.AudioFile("temp.wav") as source:
+            audio = recognizer.record(source)
+
+        text = recognizer.recognize_google(
+            audio,
+            language="he-IL"
+        )
 
         print("You said:", text)
 
