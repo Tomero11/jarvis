@@ -1,20 +1,29 @@
 import sounddevice as sd
 from scipy.io.wavfile import write
-import speech_recognition as sr
+from faster_whisper import WhisperModel
+
+
+MODEL = WhisperModel(
+    "ivrit-ai/whisper-large-v3-turbo-ct2",
+    device="cpu",
+    compute_type="int8"
+)
 
 
 def listen():
 
     fs = 44100
+    duration = 5
 
     print("Listening...")
 
     try:
         recording = sd.rec(
-            int(3 * fs),
+            int(duration * fs),
             samplerate=fs,
             channels=1,
-            dtype="int16"
+            dtype="int16",
+            device=1
         )
 
         sd.wait()
@@ -25,24 +34,25 @@ def listen():
         print(f"Microphone Error: {type(e).__name__}: {e}")
         return None
 
-    recognizer = sr.Recognizer()
-
     try:
-        with sr.AudioFile("temp.wav") as source:
-            audio = recognizer.record(source)
-
-        text = recognizer.recognize_google(
-            audio,
-            language="he-IL"
+        segments, info = MODEL.transcribe(
+            "temp.wav",
+            language="he",
+            beam_size=5,
+            vad_filter=True
         )
 
-        print("You said:", text)
+        text = " ".join(
+            segment.text.strip()
+            for segment in segments
+        ).strip()
 
-        return text
+        if text:
+            print("You said:", text)
+            return text
 
-    except sr.UnknownValueError:
         return None
 
     except Exception as e:
-        print(f"Listening Error: {type(e).__name__}: {e}")
+        print(f"Whisper Error: {type(e).__name__}: {e}")
         return None
