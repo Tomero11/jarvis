@@ -1,10 +1,21 @@
 import sounddevice as sd
 from scipy.io.wavfile import write
 from faster_whisper import WhisperModel
+from pathlib import Path
+import sys
+
+
+if getattr(sys, "frozen", False):
+    BASE_DIR = Path(sys.executable).parent
+else:
+    BASE_DIR = Path(__file__).resolve().parent
+
+
+MODEL_PATH = BASE_DIR / "whisper-model"
 
 
 MODEL = WhisperModel(
-    "ivrit-ai/whisper-large-v3-turbo-ct2",
+    str(MODEL_PATH),
     device="cpu",
     compute_type="int8"
 )

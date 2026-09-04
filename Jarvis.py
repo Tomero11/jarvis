@@ -11,7 +11,7 @@ from ai import ask_ai
 from people_detection import start_vision
 import threading
 import re
-
+from datetime import datetime
 
 def say(text):
     print(f"Jarvis: {text}")
@@ -106,6 +106,20 @@ def start_jarvis():
             else:
                 say("אני עדיין לא יודע כמה חתולים יש לך")
             continue
+        elif "מה השעה" in text:
+            now = datetime.now()
+            current_time = now.strftime("%H:%M")
+
+            print(f"Time: {current_time}")
+            say(f"השעה כרגע {current_time}")
+            continue
+        elif "מה התאריך היום" in text:
+         now = datetime.now()
+         current_date = now.strftime("%d/%m/%Y")
+
+         print(f"Date: {current_date}")
+         say(f"התאריך היום הוא {current_date}")
+         continue
 
         elif "מה אתה יודע עליי" in text:
             name = get_profile_value("name")
@@ -135,6 +149,7 @@ def start_jarvis():
             except Exception as e:
                 print("AI Error:", e)
                 say("AI is offline")
+                
 
 
 start_jarvis()
